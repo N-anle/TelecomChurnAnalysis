@@ -1,59 +1,119 @@
-# 📘 Project: Churn Prediction
+# Telco Customer Churn & Retention Strategy
 
-This project focuses on understanding **why customers leave** and **identifying who is most at risk**, using exploratory data analysis (EDA) and machine learning readiness techniques.
+## Overview
+Customer churn represents a **direct and recurring revenue loss**.  
+This project analyzes customer behavior to **identify high-risk churn segments**, understand **why they churn**, and translate those insights into **actionable retention strategies**.
 
----
-
-## 🎯 Project Objective
-Use customer metrics to quantify:
-- **How likely** each customer is to churn  
-- **Who** is most likely to churn  
-- **Why** certain customer groups show higher churn tendencies  
-
-The goal is to provide businesses with **early insight** so they can take action and retain existing customers.
+The analysis focuses on a Telco dataset where a specific customer segment (Fiber Optic, Month-to-Month users) exposes **>$70,000 in monthly recurring revenue at risk**.
 
 ---
 
-## 🧹 Phase 1 — Data Cleaning & Preparation
-- Standardized data types and removed inconsistencies  
-- Handled missing values  
-- Prepared numerical and categorical features for analysis and modeling  
+## Business Objective
+Move beyond churn prediction as a classification task and instead:
+- Identify **who is most at risk**
+- Understand **why churn occurs**
+- Quantify **which interventions are financially justified**
+
+The goal is to support **proactive retention decisions**, not automated cancellations or alerts.
 
 ---
 
-## 🔎 Phase 2 — Univariate Analysis
-A feature-by-feature review to understand:
-- The distribution of each variable  
-- Key customer segments  
-- Patterns that may influence churn behavior  
+##  Data Preparation
+- Cleaned and standardized customer-level data
+- Handled missing and inconsistent values
+- Encoded categorical variables and scaled numerical features
+- Preserved class balance awareness (≈26% churn rate)
 
-This phase highlighted important variables such as **tenure**, **contract type**, **payment method**, and **service subscriptions**.
-
----
-
-## 🧪 Next Step — Bivariate Hypotheses to Test
-These hypotheses guide the deeper analysis:
-
-1. **Contract Type → Churn**  
-   Customers on *Month-to-month* contracts churn the most.
-
-2. **Tenure → Churn**  
-   Newer customers (low tenure) have the highest churn rate.
-
-3. **Services → Churn**  
-   Customers with fewer subscribed services churn more often.
-
-4. **Payment Method → Churn**  
-   Electronic check users have a higher churn probability.
+The final dataset contains **7,043 customers** and **20 behavioral, contractual, and billing features**.
 
 ---
 
-## 📈 Goal of the Full Project
-Build a churn prediction pipeline that allows businesses to:
-- Identify at-risk customers  
-- Understand the root causes  
-- Prioritize retention strategies  
-- Reduce churn and boost long-term customer value  
+## Exploratory Data Analysis (EDA)
+
+### Key Dimensions Analyzed
+- **Customer tenure**
+- **Contract type**
+- **Service subscriptions**
+- **Payment methods**
+- **Monthly charges**
+
+EDA was structured around **business questions**, not just correlations.
 
 ---
 
+## Key Insights
+
+### 1️⃣ The “Month-1 Cliff”
+- ~60% of Month-to-Month customers churn within the **first 30 days**
+- Indicates **onboarding or setup failure**, not price sensitivity
+
+### 2️⃣ The “Protection Gap”
+- High-value Fiber customers are the **least protected**
+- ~73% lack retention anchors (Online Security or Tech Support)
+- Customers with these services are **~50% less likely to churn**
+
+### 3️⃣ Payment Method as a Proxy Risk Signal
+- Electronic Check users show significantly higher churn
+- Further analysis revealed this is a **proxy** for:
+  - Fiber subscription
+  - Month-to-Month contracts
+  - Low service stickiness
+
+---
+
+## Modeling Approach
+
+- **Model:** Logistic Regression  
+- **Objective:** Maximize Recall on churners while retaining interpretability  
+- **Class Handling:** `class_weight='balanced'` to reflect financial asymmetry  
+
+### Why Logistic Regression?
+- Strong linear churn drivers (pricing, tenure, contract structure)
+- Stable performance under class imbalance
+- Transparent coefficients for stakeholder trust
+
+---
+
+## Model Performance (Test Set)
+- **Recall:** ~72%  
+- **Precision:** ~54% (>2× lift over baseline churn rate of 26%)  
+- **ROC-AUC:** 0.84  
+
+Metrics were selected based on **business cost trade-offs**, not raw accuracy.
+
+---
+
+## Retention Strategy Simulation
+
+Two counterfactual simulations were conducted to estimate real-world impact.
+
+### Scenario A — Contract Migration
+- Incentivize high-risk Month-to-Month users to 1-Year contracts
+- **Projected churn reduction:** ~34%
+- **Revenue upside:** ~$12,600 per month (test cohort)
+
+### Scenario B — Targeted Retention Campaign
+- Estimated intervention cost: $30 per customer
+- Payback period: ~2.5 months
+- **12-month ROI:** ~380%
+
+---
+
+## Outcome
+This project delivers a **data-driven retention framework** that:
+- Prioritizes high-risk customers
+- Identifies structural churn drivers
+- Demonstrates why **retention is financially superior to acquisition**
+
+---
+
+## Key Takeaway
+Churn is not random — it is **structural, predictable, and preventable** when customer behavior, product design, and financial incentives are aligned.
+
+---
+
+## 🛠 Tools & Technologies
+- Python
+- Pandas, NumPy
+- Scikit-Learn
+- Matplotlib / Seaborn
